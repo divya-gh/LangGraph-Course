@@ -93,6 +93,4 @@ LangSmith = debug, test, and monitor the agent
     * Studio gives you an interactive playground
     * Traces help you fix issues quickly
 
-This is why the LangGraph Academy course requires you to set up LangSmith.
-
 <img src="../Images/langSmith.png" width="350" height="400">
