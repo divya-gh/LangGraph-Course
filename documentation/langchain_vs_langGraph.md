@@ -16,6 +16,7 @@ LangChain is a library that gives you:
 It’s basically the toolbox for building LLM applications.
 
 ✔️ Best for:
+
     * Quick prototypes
     * Simple pipelines
     * Retrieval‑augmented generation (RAG)
@@ -23,6 +24,7 @@ It’s basically the toolbox for building LLM applications.
     * Building small workflows
 
 ❌ Not great for:
+
     * Multi‑step agents
     * Stateful workflows
     * Complex control flow
@@ -45,6 +47,7 @@ LangGraph is a framework for building stateful, multi‑step agents.
 LangGraph is built specifically for agentic workflows, not just single LLM calls.
 
 ✔️ Best for:
+
     * ReAct agents
     * Tool‑using agents
     * Multi‑step reasoning
@@ -55,6 +58,7 @@ LangGraph is built specifically for agentic workflows, not just single LLM calls
 Anything that needs reliability + traceability
 
 ❌ Not meant for:
+
     * Simple one‑shot LLM calls
     * Basic RAG without agent behavior
 
@@ -71,6 +75,7 @@ So, it’s not “LangChain OR LangGraph” — it’s:
 👉 LangGraph = architecture for agents
 ## 🚀 Why LangGraph exists (the short version)
 LLMs are not reliable when you ask them to:
+
     * plan
     * reason step‑by‑step
     * call tools repeatedly
@@ -79,6 +84,7 @@ LLMs are not reliable when you ask them to:
     * avoid hallucinations
 
 LangGraph fixes this by giving you:
+
     * deterministic execution
     * explicit state
     * explicit control flow
