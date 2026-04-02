@@ -63,7 +63,7 @@ Anything that needs reliability + traceability
     * Basic RAG without agent behavior
 
 ## 🎨 The simplest analogy
-<img src="./Images/Langchain_langGraph_diff.png" width="350" height="400">
+<img src="../Images/Langchain_langGraph_diff.png" width="350" height="400">
 
 ### Example:
 
