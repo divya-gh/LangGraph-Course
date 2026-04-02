@@ -62,7 +62,7 @@ Anything that needs reliability + traceability
     * Simple one‑shot LLM calls
     * Basic RAG without agent behavior
 
-## 🎨 The simplest analogy
+
 <img src="../Images/Langchain_langGraph_diff.png" width="350" height="400">
 
 ### Example:
