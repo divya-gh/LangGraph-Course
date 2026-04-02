@@ -4,6 +4,7 @@ Think of them as two different layers in the same ecosystem:
 
 ## 🧩 1. LangChain = Tools + Components
 LangChain is a library that gives you:
+
     * LLM wrappers
     * Prompt templates
     * Retrievers
