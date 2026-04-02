@@ -93,4 +93,4 @@ LangSmith = debug, test, and monitor the agent
     * Studio gives you an interactive playground
     * Traces help you fix issues quickly
 
-<img src="../Images/langSmith.png" width="350" height="400">
+<img src="../Images/langsmith.png" width="350" height="400">
