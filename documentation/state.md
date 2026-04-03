@@ -91,7 +91,8 @@ For example, you might define:
 ##### python code:
 ``` class State(TypedDict):
     messages: list
-    search_results: list   ```
+    search_results: list
+```
 
 This tells LangGraph:
     - “State must have a messages list”
