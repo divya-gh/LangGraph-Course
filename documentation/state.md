@@ -95,7 +95,7 @@ For example, you might define:
 
 This tells LangGraph:
     - “State must have a messages list”
-`   - “State may have a search_results list”
+    - “State may have a search_results list”
 It’s like giving rules for what the backpack can contain.
 
 ## 🔁 Now: What are Nodes and Edges?
