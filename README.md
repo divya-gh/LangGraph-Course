@@ -1,7 +1,7 @@
 # LangGraph-Course
 Course from LangGraph Academy designed to learn fundamentals of graph-based LLM workflows to building sophisticated, production-ready multi-agent applications.
 
-#  📖 Course Overview : This curriculum is divided into six modules. Each module transitions from foundational concepts to advanced orchestration techniques.
+###  📖 Course Overview : This curriculum is divided into six modules. Each module transitions from foundational concepts to advanced orchestration techniques.
 * Video Lessons: Conceptual deep dives.
 * Jupyter Notebooks: Hands-on coding exercises.
 * Studio Subdirectories: Pre-configured graphs to explore via the LangGraph Studio IDE.
