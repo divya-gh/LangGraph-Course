@@ -13,7 +13,6 @@ Imagine you’re doing a scavenger hunt.
 You carry a backpack.
 
     * Inside the backpack, you keep:
-
         * clues you’ve found
         * items you’ve collected
         * notes you’ve written
@@ -105,8 +104,8 @@ It’s like giving rules for what the backpack can contain.
 
 In LangGraph:
 
-Nodes = steps in your agent (LLM call, tool call, logic step)
-Edges = connections between steps (what happens next)
+   Nodes = steps in your agent (LLM call, tool call, logic step)
+   Edges = connections between steps (what happens next)
 
 Every node receives the state as input and returns an updated state as output.
 
