@@ -103,8 +103,8 @@ It’s like giving rules for what the backpack can contain.
 ## 🔁 Now: What are Nodes and Edges?
 
 In LangGraph:
-
    Nodes = steps in your agent (LLM call, tool call, logic step)
+   
    Edges = connections between steps (what happens next)
 
 Every node receives the state as input and returns an updated state as output.
