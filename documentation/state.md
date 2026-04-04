@@ -96,12 +96,14 @@ For example, you might define:
 ```
 
 This tells LangGraph:
+
     - “State must have a messages list”
     - “State may have a search_results list”
 It’s like giving rules for what the backpack can contain.
 
 ## 🔁 Now: What are Nodes and Edges?
 In LangGraph:
+
 Nodes = steps in your agent (LLM call, tool call, logic step)
 Edges = connections between steps (what happens next)
 Every node receives the state as input and returns an updated state as output.
@@ -110,12 +112,14 @@ Every node receives the state as input and returns an updated state as output.
 “The State schema serves as the input schema for all Nodes and Edges in the graph.”
 
 It means: 👉 Every node and every edge in your graph receives the same State object as input.
+
     - They all read from the same backpack.
     - They all update the same backpack.
     - They all follow the same rules (the schema) about what can be inside the backpack.
 
 ## 🧠 Why this matters?
 Because:
+
     - your agent might have many steps
     - each step needs to know what happened before
     - each step must update the shared memory
