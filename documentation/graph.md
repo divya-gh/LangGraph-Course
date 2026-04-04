@@ -2,6 +2,7 @@
 🌱 What is a graph ?
 
 When you build an agent in LangGraph, you’re really building a graph:
+
     - You define the state schema (what the agent remembers)
     - You define nodes (what the agent does)
     - You define edges (how the agent moves between steps)
@@ -16,6 +17,7 @@ It’s not a picture you draw — it’s a structure your program uses to decide
 
 #### 🧩 Graph = Nodes + Edges
 Nodes: Perform
+
     - call an LLM
     - call a tool
     - check the state
@@ -29,6 +31,7 @@ They tell the agent:
 
 ### 🎒 Why LangGraph uses a graph
 LangGraph builds multi‑step agents, and those agents need:
+
     - loops
     - branching
     - retries
