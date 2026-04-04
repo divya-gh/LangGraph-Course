@@ -24,7 +24,8 @@ Nodes: Perform
     - decide something
     - return an answer
 
-Edges: These are the connections between steps.
+Edges: Connections between steps.
+
 They tell the agent:
 
     “After this step, go to that step.”
