@@ -3,8 +3,7 @@
 
 When you build an agent in LangGraph, you’re really building a graph:
 
-    - You define the state schema eg:
-    9using stateGraph (what the agent remembers)
+    - You define the state schema eg: using stateGraph (what the agent remembers)
     - You define nodes (what the agent does)
     - You define edges (how the agent moves between steps)
 Studio then visualizes this graph so you can see your agent’s reasoning.
