@@ -27,6 +27,7 @@ Nodes: Perform
 Edges: Connections between steps.
 
 They tell the agent:
+
     “After this step, go to that step.”
     “If condition A, go to node_2; if B, go to node_3.”
 
