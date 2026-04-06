@@ -1,0 +1,9 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "mood_graph_2": "./mood_graph_2.py:graph",
+    "simple_mood": "./simple_mood.py:app"
+
+  },
+  "env": ".env"
+}
