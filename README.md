@@ -41,7 +41,8 @@ python -m venv lc-academy-env
 source lc-academy-env/Scripts/activate
 
 # Install dependencies
-pip install -r requirements.txt
+pip install langchain-core
+pip install langchain
 
 # Jupyter Notebook: 
 Bash:
@@ -70,12 +71,80 @@ Required for debugging and visualizing your agent's thought process.
 Note:  nce you selected US, you do not need the EU endpoint line.
 
 # LLM & Tools
-#### OpenAI: Required for primary course lessons. Set up OpenAI API key 
-  * Add this line in lc-academy-env → Scripts/activate file: export OPENAI_API_KEY="your-openai-key"
-  * Save the file.
-  * Reactivate your environment: Code source lc-academy-env/Scripts/activate
+This langgraph course uses Gemini model instead of open AI as openAi isn't free
+
+#### Set up : GenAI: Required for primary course lessons. Set up GenAI API key 
+1.  Got o aistudio.google.com to create an API key
+2. Activate virtual environment 
+3. Install Gemini SDK : Install Google’s newer, lighter-weight SDK designed to avoid protobuf conflicts -google genai
+bash
+  ```
+  source venv/Scripts/activate
+
+  pip install google-genai
+  pip install langchain-google-genai
+
+```
+
+  * Add the google API ke in .env → OPENAI_API_KEY="your-openai-key"
+  * Save and add it to gitignore to protect the API key.
+  * Reactivate your environment: Code source venv/Scripts/activate
   * 🧪 Verify it worked Run: echo $OPENAI_API_KEY
   * If it prints your key, you're all set.
+4. activate api key for genai
+  * If you’re using a .env file, load it in your notebook:
+  python
+  ```
+    from dotenv import load_dotenv
+    load_dotenv()
+
+```
+5.connect to genai:
+notebook:
+```
+import google.generativeai as genai
+import os
+os.environ["GOOGLE_API_USE_V1"] = "true"     #LangChain defaults to the old API.
+
+
+genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
+print([m.name for m in genai.list_models()])
+```
+prints available models. use one.
+
+5.  LangChain’s Gemini wrapper supports:
+
+- gemma-3-4b-it
+- gemini-2.5-flash-lite
+- veo-3.1-lite-generate-preview
+- gemini-2.5-flash
+- gemini-2.5-pro
+- gemini-3.1-flash-live-preview and more!
+
+(Use any of the above)
+6. example code:
+notebook:
+    ```
+    from dotenv import load_dotenv
+    load_dotenv()
+    os.environ["GOOGLE_API_USE_V1"] = "true"
+
+    from langchain_google_genai import ChatGoogleGenerativeAI
+
+    llm = ChatGoogleGenerativeAI(
+        model="gemini-2.5-flash",
+        temperature=0.2
+    )
+
+    messages = [
+        ("human", "Hello Gemini, how are you?")
+    ]
+
+    result = llm.invoke(messages)
+    print(result.content)
+
+    ```
+
 #### Tavily for web search:Tavily Search API is a search engine optimized for LLMs and RAG, aimed at efficient, quick, and persistent search results.
   * Add your Tavily key in lc-academy-env → Scripts/activate file: export TAVILY_API_KEY="your-tavily-key"
   * Reactivate your environment: Code source lc-academy-env/Scripts/activate
@@ -83,4 +152,5 @@ Note:  nce you selected US, you do not need the EU endpoint line.
 
 
 
-Citation: LangGraph Academy course, which teaches developers how to build stateful, multi-agent AI applications using graph-based workflows. 
+Citation: LangGraph Course is derived from LangGraph academy course and built with genAI and Jetson AI 
+          - Learn how to build stateful, multi-agent AI applications using graph-based workflows. 

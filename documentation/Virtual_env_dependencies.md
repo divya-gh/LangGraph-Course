@@ -1,4 +1,3 @@
-# Generate a markdown for creating vertual environment and dependencies to run langGraph code
 
 ## ✅ 1. Create the virtual environment (if you haven’t yet)
 bash
@@ -34,6 +33,7 @@ If you're following LangChain Academy or LangGraph tutorials, you may also need:
 
 bash
 pip install langchain langchain-core langchain-community
+
 And if your notebook uses Jupyter:
 
 bash
