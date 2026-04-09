@@ -74,7 +74,7 @@ Note:  nce you selected US, you do not need the EU endpoint line.
 This langgraph course uses Gemini model instead of open AI as openAi isn't free
 
 #### Set up : GenAI: Required for primary course lessons. Set up GenAI API key 
-1.  Got o aistudio.google.com to create an API key
+1.  Got to aistudio.google.com to create an API key
 2. Activate virtual environment 
 3. Install Gemini SDK : Install Google’s newer, lighter-weight SDK designed to avoid protobuf conflicts -google genai
 bash
@@ -86,15 +86,17 @@ bash
 
 ```
 
-  * Add the google API ke in .env → OPENAI_API_KEY="your-openai-key"
-  * Save and add it to gitignore to protect the API key.
+  * Add the google API ke in .env → GOOGLE_API_KEY="your-genai-key"
+  * Save and add it to .gitignore to protect the API key.
   * Reactivate your environment: Code source venv/Scripts/activate
-  * 🧪 Verify it worked Run: echo $OPENAI_API_KEY
+  * 🧪 Verify it worked Run: echo $GOOGLE_API_KEY
   * If it prints your key, you're all set.
+
 4. activate api key for genai
   * If you’re using a .env file, load it in your notebook:
+
   python
-  ```
+```
     from dotenv import load_dotenv
     load_dotenv()
 
@@ -102,15 +104,15 @@ bash
 5.connect to genai:
 notebook:
 ```
-import google.generativeai as genai
-import os
-os.environ["GOOGLE_API_USE_V1"] = "true"     #LangChain defaults to the old API.
+    import google.generativeai as genai
+    import os
+    os.environ["GOOGLE_API_USE_V1"] = "true"     #LangChain defaults to the old API.
 
+    genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
+    print([m.name for m in genai.list_models()])
 
-genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
-print([m.name for m in genai.list_models()])
-```
-prints available models. use one.
+    ```
+  prints available models. use one.
 
 5.  LangChain’s Gemini wrapper supports:
 

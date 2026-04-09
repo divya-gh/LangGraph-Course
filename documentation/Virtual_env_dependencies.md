@@ -25,18 +25,26 @@ After activating your venv:
 bash
 ```
 source venv/bin/activate
+```
 Then install LangGraph:
-
 bash
+```
 pip install langgraph
+```
 If you're following LangChain Academy or LangGraph tutorials, you may also need:
 
 bash
+```
 pip install langchain langchain-core langchain-community
-
+```
+or add following to notebook virtual environment:
+```
+%pip install --quiet -U langchain_openai langchain_core langchain_community langchain-tavily
+```
 And if your notebook uses Jupyter:
 
 bash
+```
 pip install ipykernel
 python -m ipykernel install --user --name=venv
 ```
