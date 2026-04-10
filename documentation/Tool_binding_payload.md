@@ -3,11 +3,12 @@
 ### Analogy:
 - Talking to an LLM is like talking to a person.
 - Talking to an API is like filling out a form.
-
-The “payload” is the filled-out form.
+- The “payload” is the filled-out form.
 
 #### Humans talk in natural language.
+```
 You can say: “Book me a flight to New York tomorrow.”
+```
 
 #### APIs do NOT understand natural language.
 They expect a structured payload, like:
