@@ -98,3 +98,60 @@ We’re learning:
 - MCP
 
 All of these require the LLM to produce structured payloads when interacting with external systems. This is the core idea behind tool calling.
+
+# Tool Binding
+
+In langchain , Langgraph , binding a tools help model access its input-schema as "blueprint" that lets the model identify the tool(name), what it does(description), what inputs it needs and what types those inputs must be.
+
+## 🌟 First: What is a “tool” in LLMs?
+A tool is just a function you let the model call. 
+
+Example:python
+```
+def get_weather(city: str, units: str):
+    ...
+```
+When you “bind” this function as a tool, you’re telling the model:
+```
+“Hey, you’re allowed to call this function.
+Here’s what it’s called, what it does, and what inputs it needs.”
+```
+## 🌟 What does “input schema” mean?
+The input schema is the shape of the data the tool expects.
+For example, this function: 
+```
+def get_weather(city: str, units: str):
+```
+has this schema: json
+```
+{
+  "type": "object",
+  "properties": {
+    "city": {"type": "string"},
+    "units": {"type": "string"}
+  },
+  "required": ["city", "units"]
+}
+```
+This tells the model:
+
+    - it must provide a city (string)
+    - it must provide units (string)
+    - both are required
+
+## 🌟 Why this matters in LangGraph
+In LangGraph, tools are often used inside nodes.
+When you bind a tool: python
+```
+llm = llm.bind_tools([add_numbers])
+```
+- You’re giving the LLM:
+    - the tool name
+    - the description
+    - the input schema
+- This lets the model:
+    - decide when to call the tool
+    - generate the correct arguments
+    - follow the schema exactly
+
+Without this, the model would not know how to call the tool.
