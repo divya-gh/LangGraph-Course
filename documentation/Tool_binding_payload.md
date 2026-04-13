@@ -144,8 +144,10 @@ This tells the model:
 In LangGraph, tools are often used inside nodes.
 When you bind a tool: python
 ```
-llm = llm.bind_tools([add_numbers])
+llm = llm.bind_tools([get_weather])
 ```
+
+
 - You’re giving the LLM:
     - the tool name
     - the description
@@ -156,3 +158,46 @@ llm = llm.bind_tools([add_numbers])
     - follow the schema exactly
 
 Without this, the model would not know how to call the tool.
+
+## Example:
+Below is an example where a model must pull a list of addresses from an input and pass it along into a tool:
+```
+from typing import List
+from typing_extensions import TypedDict
+
+from langchain_anthropic import ChatAnthropic
+
+class Address(TypedDict):
+    street: str
+    city: str
+    state: str
+
+def validate_user(user_id: int, addresses: List[Address]) -> bool:
+    """Validate user using historical addresses.
+
+    Args:
+        user_id: (int) the user ID.
+        addresses: Previous addresses.
+    """
+    return True
+
+llm = ChatAnthropic(
+    model="claude-3-sonnet-20240229"
+).bind_tools([validate_user])
+
+result = llm.invoke(
+    "Could you validate user 123? They previously lived at "
+    "123 Fake St in Boston MA and 234 Pretend Boulevard in "
+    "Houston TX."
+)
+result.tool_calls
+```
+#### output:
+```
+[{'name': 'validate_user',
+  'args': {'user_id': 123,
+   'addresses': [{'street': '123 Fake St', 'city': 'Boston', 'state': 'MA'},
+    {'street': '234 Pretend Boulevard', 'city': 'Houston', 'state': 'TX'}]},
+  'id': 'toolu_011KnPwWqKuyQ3kMy6McdcYJ',
+  'type': 'tool_call'}]
+  ```
