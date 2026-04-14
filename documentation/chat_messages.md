@@ -138,3 +138,46 @@ messages = [
 response = model.invoke(messages)
 ​```
 
+# 🌟 What is AnyMessage in LangGraph?
+AnyMessage is a type that represents any kind of chat message that can flow through a LangGraph state.
+
+Think of it as a container that can hold any message format used by LangChain chat models.
+
+- a HumanMessage (user)
+- an AIMessage (assistant)
+- a SystemMessage (instructions)
+- a ToolMessage (tool output)
+- a FunctionMessage (function call result)
+- a raw dict (e.g., {"role": "user", "content": "Hi"})
+
+So: AnyMessage = “a message of any type that a chat model understands.”
+
+## 📦 Visual explanation
+Imagine a box labeled messages:
+
+Code
+```
+messages = [
+   HumanMessage("Hi"),
+   AIMessage("Hello!"),
+   ToolMessage("Weather is 72°F"),
+   AIMessage("It’s sunny today!")
+]
+```
+Every item in that list is an AnyMessage.
+
+## 🧪 Example: Using AnyMessage in a state schema
+python
+``
+from typing import List
+from langgraph.graph import StateGraph, MessagesState
+
+class State(MessagesState):
+    pass
+```
+This automatically gives you:
+
+python
+```
+state["messages"]  # → List[AnyMessage]
+```
