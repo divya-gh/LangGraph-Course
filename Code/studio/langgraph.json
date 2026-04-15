@@ -2,7 +2,9 @@
   "dependencies": ["."],
   "graphs": {
     "mood_graph_2": "./mood_graph_2.py:graph",
-    "simple_mood": "./simple_mood.py:app"
+    "simple_mood": "./simple_mood.py:app",
+    "chain_toolCall": "./chain_toolCall.py:graph2",
+    "tool_call_router": "./tool_call_router.py:graph"
 
   },
   "env": ".env"

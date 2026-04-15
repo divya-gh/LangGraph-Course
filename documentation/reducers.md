@@ -95,6 +95,10 @@ class State(MessagesState):
 LangGraph gives you built‑in reducers for chatbots: python
 ```
 from langgraph.graph import MessagesState
+
+class messages_state(MessagesState):
+    pass
+    
 ```
 This automatically sets:
     -messages → append reducer

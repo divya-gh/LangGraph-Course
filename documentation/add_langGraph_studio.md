@@ -202,3 +202,13 @@ This just organizes your traces into a named project.
 - your traces will just go into the “default” project
 - So again, optional.
 
+# Using LLMs in graph
+- ensure .env file has API key for Llm's in Studio folder
+- Ensure graph can be imported in another python file
+- debug:python
+``` 
+from chain_toolCall import graph2
+print(graph2)
+```
+If it prints path, graph is working
+
