@@ -66,3 +66,8 @@ from langgraph.checkpoint.memory import MemorySaver
 
 checkpointer = MemorySaver()
 graph = builder.compile(checkpointer=checkpointer)
+
+```
+
+# # use langraph sdk for Deployment
+from langgraph_sdk import get_client
