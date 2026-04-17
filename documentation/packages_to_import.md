@@ -60,3 +60,9 @@ from langgraph.prebuilt import ToolNode
 ```
 from langgraph.prebuilt import tools_condition
 ```
+# Persistance : Memory
+```
+from langgraph.checkpoint.memory import MemorySaver
+
+checkpointer = MemorySaver()
+graph = builder.compile(checkpointer=checkpointer)

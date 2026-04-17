@@ -125,10 +125,11 @@ For long-term memory, you’d use a checkpointer like:
 ## 🧩 How MemorySaver is used
 You typically see it in LangGraph examples like: python
 ```
-from langgraph.checkpoint import MemorySaver
+from langgraph.checkpoint.memory import MemorySaver
 
 checkpointer = MemorySaver()
 graph = builder.compile(checkpointer=checkpointer)
+
 ```
 This means:
 - The graph will save state between steps
@@ -225,3 +226,72 @@ Since your notebook uses MemorySaver, here’s the difference:
 - The checkpointer write the state at every step of the graph
 - These checkpoints are saved in a thread
 - We can access that thread in the future using the thread_id
+
+-------------------------------------------------------------------------
+
+#  saved snapshot of your agent’s state at a specific moment in time.
+
+    - Think of it like a video-game save point.
+    - After each agent step, LangGraph writes a checkpoint.
+    - To continue later, the agent loads the latest checkpoint.
+    - Enables pausing, resuming, and continuing conversations without losing context.
+
+## ⭐ Why Checkpoints Matter
+Checkpoints enable:
+
+✔ Multi‑turn conversations
+Your agent can remember previous messages and tool results.
+
+✔ Long‑running workflows
+If your agent needs multiple steps (LLM → tool → LLM → tool), checkpoints keep the state alive.
+
+✔ Persistence across sessions
+With a real storage backend (SQLite, Postgres), your agent can remember things even after you close the notebook.
+
+✔ Multi‑user support
+Each user gets their own checkpoint history, identified by a thread ID.
+
+## ⭐ How Checkpoints Work
+Every time the graph executes a node, LangGraph:
+- Update the graph state with the node's outputs
+- Save the updated state as a checkpoint
+- Proceed to the next node
+If you run the graph again with the same thread ID, LangGraph loads the last checkpoint and continues from there.
+
+## ⭐ Checkpoints + Thread ID
+These two concepts work together:
+
+    Thread ID = the conversation/session identifier
+    Checkpoint = the saved state for that thread
+
+Example: python
+```
+graph.invoke(
+    {"messages": [...]},
+    config = {"configurable": {"thread_id": "1"}}
+)
+```
+LangGraph will:
+
+    - Look up the last checkpoint for user123
+    - Load the saved state
+    - Continue the conversation
+
+# ⭐ Types of Checkpointers
+LangGraph supports several checkpoint storage options:
+
+1. MemorySaver (in‑memory only)
+    - Fast
+    - Temporary
+    - Lost when kernel restarts
+    - Great for notebooks and demos
+
+2. SQLiteSaver (disk persistence)
+    - Saves checkpoints to a .db file
+    - Survives restarts
+    - Perfect for small apps
+
+3. PostgresSaver (production‑grade)
+    - Stores checkpoints in a Postgres database
+    - Supports many users
+    - Ideal for deployed agents
