@@ -7,6 +7,15 @@ from dotenv import load_dotenv
 from google import genai
 from langchain_google_genai import ChatGoogleGenerativeAI
 ```
+# Create state and stateSchema
+```
+from typing_extensions import TypedDict
+from typing import Literal
+
+class TypedDictState(TypedDict):
+    name: str
+    mood: Literal["happy","sad"]
+```
 # Writing tools
  - use @tool beofre writing a tool function
 ```

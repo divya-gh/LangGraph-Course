@@ -84,13 +84,19 @@ LangGraph is built around state machines.
 You can literally see the state change step‑by‑step in LangSmith Studio.
 
 # 🧩 What is a “State schema”?
-A schema is just a description of what can go inside the backpack.
+A schema is just a description of what can go inside the state(backpack).
+
+A state schema is the structure of the memory your agent uses.
+It defines what data exists, what type it is, and how nodes share it.
+
 For example, you might define:
 
 ##### python code:
-``` class State(TypedDict):
+``` class MyState(TypedDict):
     messages: list
     search_results: list
+
+builder = StateGraph(MyState)
 
 ```
 
@@ -99,6 +105,25 @@ This tells LangGraph:
     - “State must have a messages list”
     - “State may have a search_results list”
 It’s like giving rules for what the backpack can contain.
+
+“This graph uses the State schema. All nodes must read and write data that fits this structure.”
+
+If a node returns something invalid (wrong type, missing field), LangGraph will warn you.
+
+## 🧱 Different Ways to Define a State Schema
+The notebook mentions that LangGraph supports multiple schema styles :
+
+✔ TypedDict (most common)
+Simple, Pythonic, beginner‑friendly.
+
+✔ pydantic.BaseModel
+More validation, more structure.
+
+✔ dataclasses.dataclass
+Lightweight, Python-native.
+
+✔ Plain Python dictionaries
+Fast and flexible, but less safe.
 
 ## 🔁 Now: What are Nodes and Edges?
 
