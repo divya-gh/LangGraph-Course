@@ -16,6 +16,11 @@ class TypedDictState(TypedDict):
     name: str
     mood: Literal["happy","sad"]
 ```
+# state schema with data class
+```
+from dataclasses import dataclass
+```
+
 # Writing tools
  - use @tool beofre writing a tool function
 ```
