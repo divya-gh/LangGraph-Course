@@ -21,6 +21,32 @@ class TypedDictState(TypedDict):
 from dataclasses import dataclass
 ```
 
+## 2. Install Pydantic
+In a terminal: bash
+```
+pip install pydantic
+```
+
+3. Your first Pydantic model
+python
+from pydantic import BaseModel
+
+class Person(BaseModel):
+    name: str
+    age: int
+BaseModel is the base class for all Pydantic models. 
+
+# Set pydantic Validation Error: python
+```
+from pydantic import BaseModel , field_validator , ValidationError
+
+try:
+    p = Person(name="Lance", age="thirty")
+except ValidationError as e:
+    print(e)
+# You’ll see a clear error telling you age must be an integer. 
+```
+
 # Writing tools
  - use @tool beofre writing a tool function
 ```

@@ -64,7 +64,15 @@ class State(TypedDict):
     bar: Annotated[list[str], add]
 ```
 
-##### In this example, we’ve used the Annotated type to specify a reducer function (operator.add) for the second key (bar). Note that the first key remains unchanged. Let’s assume the input to the graph is {"foo": 1, "bar": ["hi"]}. Let’s then assume the first Node returns {"foo": 2}. This is treated as an update to the state. Notice that the Node does not need to return the whole State schema - just an update. After applying this update, the State would then be {"foo": 2, "bar": ["hi"]}. If the second node returns {"bar": ["bye"]} then the State would then be {"foo": 2, "bar": ["hi", "bye"]}. Notice here that the bar key is updated by adding the two lists together.
+##### In this example, we’ve used the Annotated type to specify a reducer function (operator.add) for the second key (bar). 
+Note that the first key remains unchanged. 
+Let’s assume the input to the graph is {"foo": 1, "bar": ["hi"]}. 
+Let’s then assume the first Node returns {"foo": 2}. 
+This is treated as an update to the state. 
+Notice that the Node does not need to return the whole State schema - just an update. 
+After applying this update, the State would then be {"foo": 2, "bar": ["hi"]}.
+If the second node returns {"bar": ["bye"]} then the State would then be {"foo": 2, "bar": ["hi", "bye"]}. 
+Notice here that the bar key is updated by adding the two lists together.
 
 ## Updating Messages: add_messages
 
@@ -83,7 +91,11 @@ class GraphState(TypedDict):
 ```
 
 ## MessagesState
-Since having a list of messages in your state is so common, there exists a prebuilt state called MessagesState which makes it easy to use messages. MessagesState is defined with a single messages key which is a list of AnyMessage objects and uses the add_messages reducer. Typically, there is more state to track than just messages, so we see people subclass this state and add more fields, like:
+Since having a list of messages in your state is so common, there exists a prebuilt state called MessagesState which makes it easy to use messages. 
+
+MessagesState is defined with a single messages key which is a list of AnyMessage objects and uses the add_messages reducer. 
+
+Typically, there is more state to track than just messages, so we see people subclass this state and add more fields, like:
 ```
 from langgraph.graph import MessagesState
 

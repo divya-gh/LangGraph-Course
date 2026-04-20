@@ -174,3 +174,91 @@ Think of a data class as:
 “A neat, compact way to define a class that mostly just holds data.”
 
 You focus on what you want to store, Python handles the how.
+
+## Example: python
+```
+from dataclasses import dataclass
+import random
+from typing import Literal
+from langgraph.graph import StateGraph , START , END
+
+@dataclass
+class dataClass_Person:
+    name : str
+    age:int
+    mood:str
+
+
+# create node function and decision tree
+def person(state):
+    return {'name': state.name + 'is', 'age': 30}
+
+def Happy_mood(state):
+    return {'mood' : 'Happy'}
+
+def Sad_mood(state):
+    return {'mood' : 'Sad'}
+
+# Decision
+def decide(state)->Literal['happy_mood', 'sad_mood']:
+    if random.random <0.5 :
+        return 'happy_mood'
+    return 'sad_mood'
+
+# add nodes and edges
+builder  = StateGraph(dataClass_Person)
+
+builder.add_node('person_node1' , person)
+builder.add_node('happy_mood' , Happy_mood)
+builder.add_node('sad_mood' , Sad_mood)
+
+# add edges
+builder.add_edge(START , 'person_node1')
+builder.add_conditional_edges('person_node1' , decide)
+builder.add_edge('happy_mood' , END)
+builder.add_edge('sad_mood', END)
+
+# # graph
+graph = builder.compile()
+
+# using dataclass, metion dataclass while invoking
+
+result = graph.invoke(dataClass_Person(name ='Diya' , age = 0 , mood = 'none'))
+
+```
+# 🌟 1. Dataclass vs TypedDict — The Core Difference
+#### TypedDict behaves like a dictionary
+So you access values like this: python
+```
+state["name"]
+state["mood"]
+```
+Because a TypedDict is literally a dict with type hints.
+
+#### Dataclass behaves like an object
+So you access values like this: python
+```
+state.name
+state.mood
+```
+Because a dataclass is a class with attributes, not a dictionary.
+
+## 🌱 2. Why This Matters in LangGraph Nodes
+When your state is a dataclass: python
+```
+@dataclass
+class DataclassState:
+    name: str
+    mood: Literal["happy","sad"]
+```
+##### LangGraph passes your state into nodes as a dataclass instance, so inside a node you must use: python
+```
+state.name
+state.mood
+```
+If you try this: python
+```
+state["name"]
+You get an error:
+TypeError: 'DataclassState' object is not subscriptable
+```
