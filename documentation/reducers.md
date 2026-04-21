@@ -1,5 +1,6 @@
 # 🌟 What are reducers in LangGraph?
 #### A reducer is a small function that tells LangGraph how to combine new state with old state.
+
 - Each key in the State has its own independent reducer function. 
 - If no reducer function is explicitly specified then it is assumed that all updates to that key should override it. 
 
@@ -14,12 +15,24 @@ python
 def append_messages(old, new):
     return old + new
 ```
+## basic Update with reducer
+```
+from typing import Annotated
+from operator import add
+class State(TypedDict):
+    foo: Annotated[list[int], add]
+```
+- adds foo value to the list instead of overwriting 
+
 #### This tells LangGraph: “When a node returns new messages, append them to the old ones.”
 
 ## 🧠 Where reducers appear in LangGraph
 1. When defining state with TypedDict
 You can attach reducers like this: python
 ```
+from langgraph.graph.message import add_messages
+from typing import Annotated
+
 class State(TypedDict):
     messages: Annotated[list[AnyMessage], add_messages]
     mood: str
@@ -115,3 +128,46 @@ class messages_state(MessagesState):
 This automatically sets:
     -messages → append reducer
     -everything else → replace reducer
+
+---------------------------------------------------------------------
+# Remove Message reducer
+
+RemoveMessage is a reducer that removes a message from a list of messages stored in your graph state.
+
+## Why it exists
+LangGraph uses reducers to safely update state in a predictable way.
+
+If your state contains a list of messages (like a chat history), you sometimes want to:
+
+- add a messagesage
+- remove a message
+- replace a messagesage
+
+RemoveMessage is the reducer that handles the “remove” part.
+
+## 🌱 How it works conceptually
+Imagine your state looks like this: python
+```
+{
+    "messages": [
+        {"id": "1", "content": "Hello"},
+        {"id": "2", "content": "Teach me Agentic AI"}
+    ]
+}
+```
+If you call: python
+```
+from langchain_core.messages import RemoveMessage
+
+RemoveMessage(state, id="2")
+```
+The reducer returns: python
+```
+{
+    "messages": [
+        {"id": "1", "content": "Hello"}
+    ]
+}
+```
+It simply filters out the message with the matching ID.
+

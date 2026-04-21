@@ -69,11 +69,17 @@ from langchain_core.messages import AnyMessage
 ```
 from typing import Annotated
 from langgraph.graph.message import add_messages
+from operator import add
 
 ```
-# using inbuilt messagesState
+# using inbuilt MessagesState reducer
 ```
 from langgraph.graph import MessagesState
+
+```
+# remove message reducer
+```
+from langchain_core.messages import RemoveMessage
 
 ```
 
