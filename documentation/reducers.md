@@ -1,4 +1,7 @@
+# Reducers - MessagesState , RemoveMessage , add_messages etc
+
 # 🌟 What are reducers in LangGraph?
+
 #### A reducer is a small function that tells LangGraph how to combine new state with old state.
 
 - Each key in the State has its own independent reducer function. 
@@ -130,9 +133,9 @@ This automatically sets:
     -everything else → replace reducer
 
 ---------------------------------------------------------------------
-# Remove Message reducer
+# Remove Message reducer - RemoveMessage
 
-RemoveMessage is a reducer that removes a message from a list of messages stored in your graph state.
+*RemoveMessage* is a reducer that removes a message from a list of messages stored in your graph state.
 
 ## Why it exists
 LangGraph uses reducers to safely update state in a predictable way.
@@ -143,31 +146,43 @@ If your state contains a list of messages (like a chat history), you sometimes w
 - remove a message
 - replace a messagesage
 
-RemoveMessage is the reducer that handles the “remove” part.
+*RemoveMessage* is the reducer that handles the “remove” part.
 
 ## 🌱 How it works conceptually
 Imagine your state looks like this: python
 ```
-{
-    "messages": [
+    messages = [
         {"id": "1", "content": "Hello"},
         {"id": "2", "content": "Teach me Agentic AI"}
     ]
-}
+
 ```
 If you call: python
 ```
 from langchain_core.messages import RemoveMessage
 
-RemoveMessage(state, id="2")
+deleted message = [RemoveMessage(id=m.id) for m in messages[:-1]]
+new_message = add_messages()
 ```
+This is removing all messages in the list but last one.
 The reducer returns: python
 ```
 {
-    "messages": [
-        {"id": "1", "content": "Hello"}
-    ]
+    new_message =  [{"id": "2", "content": "Teach me Agentic AI"}]
 }
+
 ```
 It simply filters out the message with the matching ID.
+
+## using RemoveMessage with MessagesState reducer
+
+RemoveMessage automatically removes messages from the state list for the id's supplied.
+MessagesState knows that if the {'messages': RemoveMessage(ids=[msg_id])} , apply removal.
+
+
+
+
+
+
+
 

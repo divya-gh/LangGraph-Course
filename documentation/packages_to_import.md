@@ -82,7 +82,15 @@ from langgraph.graph import MessagesState
 from langchain_core.messages import RemoveMessage
 
 ```
+# Trim messages reducer
+```
+from langchain_core.messages import trim_messages
+from langchain_core.messages.utils import (
+    trim_messages,
+    count_tokens_approximately  
+)
 
+```
 # Create mermaid graph
 ```
 from IPython.display import Image, display
