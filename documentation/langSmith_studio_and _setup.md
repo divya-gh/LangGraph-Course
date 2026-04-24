@@ -72,6 +72,7 @@ If it prints nothing, your PATH doesn’t include the script folder
     - Add dependencies:
 ```
         LANGSMITH_API_KEY=lsv2_your_real_key_here
+        GOOGLE_API_KEY=hfd_google_api_key
 
         # Optional but recommended for LangChain tracing
         LANGCHAIN_TRACING_V2=true
@@ -79,6 +80,8 @@ If it prints nothing, your PATH doesn’t include the script folder
         LANGCHAIN_PROJECT=mood-graphs
 ```
     - No quotes, no spaces, no commas.
+    - if using gemini, use google api , if using openai use openai api
+    - go to aistudio.google.com to create api keys 
     
  Note :Do not commit .env to Git. Add it to .gitignore (at repo root or inside code/studio):
  ## Key point:
