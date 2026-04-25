@@ -114,7 +114,7 @@ from langgraph.prebuilt import ToolNode
 ```
 from langgraph.prebuilt import tools_condition
 ```
-# Persistance : Memory
+# Persistance : Memory Checkpointer
 ```
 from langgraph.checkpoint.memory import MemorySaver
 
@@ -122,6 +122,26 @@ checkpointer = MemorySaver()
 graph = builder.compile(checkpointer=checkpointer)
 
 ```
+# External-DB : SQLite
+```
+import sqlite3
+conn = sqlite3.connect(":memory:", check_same_thread=False)
 
-# # use langraph sdk for Deployment
+OR
+
+db_path = "state_db/example.db"
+conn = sqlite3.connect(db_path, check_same_thread=False)
+```
+# SqliteSaver checkpointer
+```
+from langgraph.checkpoint.sqlite import SqliteSaver
+memory = SqliteSaver(conn)
+```
+
+# if langgraph.checkpointer.sqlite isnt installed
+```
+#!pip install --upgrade langgraph.checkpoint.sqlite
+```
+
+# use langraph sdk for Deployment
 from langgraph_sdk import get_client
