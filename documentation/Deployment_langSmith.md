@@ -83,7 +83,10 @@ For a beginner, Studio is the easiest way to:
 # LangSmith Studio local development workflow
 Here’s the whole workflow in plain English:
 
-Run langgraph dev  
+bash 
+```
+langgraph dev  
+```
 This starts your agent locally.
 
 Open Studio UI  
