@@ -24,10 +24,11 @@ With streaming:
     - You can display progress
     - You can update UI in real time
     - The user feels the app is fast
+    - Human in the loop system allows users to interact directly with graphs in various ways.
 
 This is why LangGraph emphasizes streaming — it dramatically improves user experience.
 
-## 🧠 How Streaming Works in LangGraph :
+## How Streaming Works in LangGraph :
 LangGraph graphs run node‑by‑node.
 
 Treditionally, When you use: python
@@ -42,7 +43,44 @@ graph.stream(...)
 ```
 You get chunks of data as each node finishes.
 
-## 🪜 Step‑by‑Step Guide
+## Types of streaming:
+#### 1. syncronous *'graph.stream'* : normal Python code that runs one step at a time.
+python
+```
+for chunk in graph.stream(...):
+    print(chunk)
+```
+and Python yields each chunk synchronously, code is processed the data is delivered for every chunk generated.
+
+#### When to use?
+    - You’re in a Jupyter notebook 
+    - You’re writing simple scripts
+    - You don’t need concurrency
+    - You want to see output as it happens
+This is what the LangGraph course uses.
+
+#### 2. Async streaming = streaming using Python’s async / await.
+python
+```
+async for chunk in graph.astream(...):
+    print(chunk)
+```
+This allows:
+    concurrency
+    non‑blocking execution
+    running multiple tasks at the same time
+integrating with async web servers (FastAPI, etc.)
+
+#### when to use async streaming?:
+    - You’re building a web app
+    - You’re using FastAPI / Starlette / Sanic
+    - You want multiple users at once
+    - You want non‑blocking LLM calls
+**❌ You do NOT need async streaming in a notebook.**
+
+---------------------------------------------------------------------
+
+# 🪜 Step‑by‑Step Guide
 Let’s build a tiny example 
 
 #### Step 1 — Define your state :
