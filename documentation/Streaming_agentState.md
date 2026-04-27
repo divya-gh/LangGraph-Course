@@ -142,6 +142,7 @@ CHUNK: {'messages': [AIMessage(content='Hello!')]}
 ```
 This appears as soon as the node finishes, not at the end of the whole graph.
 
+----------------------------------------------------------------------
 # 🎛 Streaming Modes :
 - LangGraph supports different streaming modes depending on what you want to see.
 
@@ -252,3 +253,64 @@ Code
 {'type': 'updates', 'data': {...}}
 ```
 Note:  If you don’t emit custom events, only updates are streamed as there is nothing to stream.
+
+---------------------------------------------------------------------
+
+# What are the streaming formats in langGraph?
+
+## 2 Types : LangGraph has two output formats for streaming:
+#### 1. V1 : Old format **version="v1"** - default
+This is the original streaming format.
+
+Chunks look like: python
+```
+{'messages': [...]} 
+or
+{'updates': {...}}
+```
+It works fine, but it’s not standardized.
+#### V2 : New format **version="v2"** -recomended
+This is the new, structured, consistent streaming format.
+
+Chunks look like: python
+```
+{
+  "type": "messages",
+  "data": {...}
+}
+or:
+
+{
+  "type": "updates",
+  "data": {...}
+}
+```
+## ✔ Why v2 exists:
+
+    - cleaner
+    - consistent
+    - easier for UI frameworks
+    - easier for debugging
+    - supports custom event types
+
+#### ✔ How to enable v2:
+python
+```
+from langchain_core.messages import HumanMessage
+
+for chunk in graph.stream(
+    {"messages": [HumanMessage(content="Hi!")]},
+    stream_mode=["messages", "updates"],
+    version="v2"
+):
+    print(chunk)
+
+# Output looks like: Code
+
+{'type': 'messages', 'data': {...}}
+{'type': 'updates', 'data': {...}}
+
+```
+✔ recomended :  V2
+Yes — it’s clearer and easier to understand.
+

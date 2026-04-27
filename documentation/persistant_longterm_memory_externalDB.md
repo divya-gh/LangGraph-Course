@@ -92,7 +92,11 @@ os.listdir("state_db")
 ```
 You should see: ['example.db']
 
-## . What is SqliteSaver?
+## Memory Saver : 2 types: 
+    1. SqliteSaver
+    2. AsyncSqliteSaver
+
+### 1. What is SqliteSaver?
 *SqliteSaver* is a LangGraph checkpointer that uses your SQLite connection to store graph state.
 
 EX: python
@@ -107,6 +111,37 @@ memory = SqliteSaver(conn)
     - load state from SQLite
     - resume conversations / workflows
 
+### 2. AsyncSqliteSaver
+The SqliteSaver does not support async methods. Consider using **AsyncSqliteSaver** instead.
+
+##### Install : AsyncSqliteSaver requires the aiosqlite package to use.
+```
+pip install aiosqlite
+```
+#### Create an async SQLite connection
+python
+```
+import aiosqlite
+
+conn = await aiosqlite.connect("state_db/example.db")
+```
+##### If you are not inside an async cell, wrap it like this:
+
+```
+import asyncio, aiosqlite
+
+async def setup_db():
+    return await aiosqlite.connect("state_db/example.db")
+
+conn = asyncio.run(setup_db())
+```
+##### Create async memory correctly
+python
+```
+from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
+
+memory_async = AsyncSqliteSaver(conn)
+```
 ## 5. How to plug it into a LangGraph?
 
 ### 5.1 Build your graph as usual

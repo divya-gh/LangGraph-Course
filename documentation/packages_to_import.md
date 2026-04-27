@@ -143,5 +143,16 @@ memory = SqliteSaver(conn)
 #!pip install --upgrade langgraph.checkpoint.sqlite
 ```
 
+# 2. AsyncSqliteSaver
+The SqliteSaver does not support async methods. Consider using **AsyncSqliteSaver** instead.
+```
+from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
+
+#Note: AsyncSqliteSaver requires the aiosqlite package to use.
+
+#Install with:
+`pip install aiosqlite`
+```
+
 # use langraph sdk for Deployment
 from langgraph_sdk import get_client
