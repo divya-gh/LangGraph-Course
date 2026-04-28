@@ -89,7 +89,7 @@ langgraph dev
 ```
 This starts your agent locally.
 
-Open Studio UI  
+### Open Studio UI  
 You get a visual interface connected to your local agent.
 
 Use the SDK to connect  
@@ -97,7 +97,7 @@ Use the SDK to connect
 client = get_client(url)
 ```
 
-Create a thread  
+### Create a thread  
 This is your conversation session.
 
 Send a message  
@@ -158,7 +158,7 @@ You can list them: python
 assistants = await client.assistants.search()
 assistants
 ```
-You can lsit allt he hosted graphs in the studio
+You can list all the hosted graphs in the studio
 
 ### 🧵 What is a “thread”?
 A thread is a conversation session.
@@ -210,12 +210,92 @@ async for chunk in client.runs.stream(
 What happens?
 Your agent runs step by step:
 
-LLM node
-
-Tool node
-
-LLM node
-
-Final answer
+    - LLM node
+    - Tool node
+    - LLM node
+    - Final answer
 After each step, LangGraph sends you a chunk containing the updated state.
 
+## Stream 'messages' :
+Stream only messages with 
+```
+from langchain_core.messages import convert_to_messages
+```
+### EX:
+```thread = await client.threads.create()
+input_message = HumanMessage(content="Multiply 20 and 3")
+async for event in client.runs.stream(thread["thread_id"], assistant_id="agent", input={"messages": [input_message]}, stream_mode="values"):
+    messages = event.data.get('messages',None)
+    if messages:
+        print(convert_to_messages(messages)[0])
+    print('='*25)
+```
+## # Streaming mode in LangSmith API
+** stream_mode = 'messages' **
+
+#### All events emitted using messages mode have two attributes:
+- event: This is the name of the event
+- data: This is data associated with the event
+
+#### Note:
+- metadata: metadata about the run
+- messages/complete: fully formed message
+- messages/partial: chat model tokens
+
+### EX:
+```
+
+thread = await client.threads.create()
+input_message = HumanMessage(content="add 100 and 50")
+async for event in client.runs.stream(thread["thread_id"], assistant_id="agent", input={"messages": [input_message]}, stream_mode="messages"):
+    print(event.event)
+```
+
+Output looks like:
+```
+metadata
+messages/metadata
+messages/partial
+messages/partial
+messages/partial
+messages/metadata
+messages/complete
+messages/metadata
+messages/partial
+messages/partial
+```
+## Filtering tokens and contents from streamed data
+Using python filter out streamed data for debugging and analysis
+```
+if event.event == "metadata":
+        print(f"Metadata: Run ID - {event.data['run_id']}")
+        print("-" * 50)
+    
+    # Handle partial message events
+    elif event.event == "messages/partial":
+        for data_item in event.data:
+            # Process user messages
+            if "role" in data_item and data_item["role"] == "user":
+                print(f"Human: {data_item['content']}")
+            else:
+                # Extract relevant data from the event
+                tool_calls = data_item.get("tool_calls", [])
+                invalid_tool_calls = data_item.get("invalid_tool_calls", [])
+                content = data_item.get("content", "")
+                response_metadata = data_item.get("response_metadata", {})
+
+                if content:
+                    print(f"AI: {content}")
+
+                if tool_calls:
+                    print("Tool Calls:")
+                    print(format_tool_calls(tool_calls))
+
+                if invalid_tool_calls:
+                    print("Invalid Tool Calls:")
+                    print(format_tool_calls(invalid_tool_calls))
+
+                if response_metadata and response_metadata.get("finish_reason"):
+                    print(f"Response Metadata: Finish Reason - {response_metadata['finish_reason']}")                    
+        print("-" * 50)
+```

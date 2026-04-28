@@ -153,6 +153,9 @@ from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
 #Install with:
 `pip install aiosqlite`
 ```
-
-# use langraph sdk for Deployment
+# Install LangSmith API for local development deployment
+```
+pip install -U langgraph-api
+```
+# use langraph sdk for Local Deployment
 from langgraph_sdk import get_client
