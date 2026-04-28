@@ -133,7 +133,7 @@ Response MetaData:
 model_name: None, Finish Reason: None
 Usage MetaData:
 Input Tokens: 284, Output Tokens: 2, Total Tokens: 286
-
+```
 ## Full Example:
 python:
 ```
@@ -150,7 +150,7 @@ for event in events:
     if event.event == 'metadata':
        print(f"MetaData- Run-ID: {event.data['run_id']}")
 
-# Filter data for event: 'messages/partial'
+#Filter data for event: 'messages/partial'
 for event in events:
     if event.event == 'messages/partial':
         content = event.data[0].get('content',"")
