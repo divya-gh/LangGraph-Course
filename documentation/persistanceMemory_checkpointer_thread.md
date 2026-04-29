@@ -295,3 +295,34 @@ LangGraph supports several checkpoint storage options:
     - Stores checkpoints in a Postgres database
     - Supports many users
     - Ideal for deployed agents
+
+------------------------------------------------
+
+# State Checkpoints and history
+
+<img src="../Images/state_checkpoints_memory.png" width="350" height="400">
+
+1. Get State:
+```
+state = graph.get_state(thread)
+```
+where thread is : thread = {"configurable":{'thread_ID': "1"}}
+
+Get the most recent and current checkpoints
+
+2. Super- step : 
+ Each super-step is a sequencial node collecting state information and its metadata as well as what's next .
+
+3. checkpointer: 
+stores and save state using a thread ID
+
+4. Thread ID: collection of stored data or checkpointers
+
+5. capture what's next:
+superstep smartly notes what node comes next. we can use this to identify next execution task
+```
+state = graph.get_state(thread)
+Next = state.next
+```
+- Shows what node is next wiht node name.
+
