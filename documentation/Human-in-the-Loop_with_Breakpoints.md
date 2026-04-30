@@ -4,9 +4,9 @@
 
 ### Advantages: human-in-the-loop:
 
-##### (1) Approval - We can interrupt our agent, surface state to a user, and allow the user to accept an action
-##### (2) Debugging - We can rewind the graph to reproduce or avoid issues
-##### (3) Editing - You can modify the state
+(1) Approval - We can interrupt our agent, surface state to a user, and allow the user to accept an action
+(2) Debugging - We can rewind the graph to reproduce or avoid issues
+(3) Editing - You can modify the state
 
 ## Breakpoints: predefined pause points in the graph where execution stops so a human can inspect/approve/modify state before continuing.
 
@@ -98,6 +98,49 @@ You then collect human input, for example:
     Reject → “Don’t run this tool; ask the user for more info instead.”
 
 You encode that decision into the next input or updated state you send when resuming.
+
+#### 1. User Aproval: 
+- Ask the user to continue with the tool_Call
+- If user approves,  pass"None" to the graph and continue
+
+```
+# user approval
+if toolcall:
+    user_approval = input("Do you want to continue?(yes/no): ").lower()
+    if user_approval == 'yes':
+        # pass None as input to the graph and continue from the last statenusing the thread_ID
+        async for event in client.runs.stream(
+            thread["thread_id"],
+            "agent",
+            input=None,
+            stream_mode="values",
+            interrupt_before=["tools"],
+        ):
+            print(f"Receiving new event of type: {event.event}...")
+            messages = event.data.get('messages', [])
+            if messages:
+                print(messages[-1])
+            print("-" * 50)
+        
+```
+#### Editing state:
+- You can modify the state after the graph interrupted.
+```
+# Get State
+state = graph.get_state(thread_config)
+
+#update with the new message
+graph.update_state(
+    thread,
+    {"messages": [HumanMessage(content="No, actually multiply 3 and 3!")]},
+)
+# re-run to continue
+for event in graph.stream(None, config, stream_mode="values"):
+        print(event)
+
+```
+- Messages will be annotated to the state with add_messages function since we use the reducer *'MessagesStte'*.
+
 
 #### Step 7: Resume the graph - Method 1
 To continue from the breakpoint, you call the graph again with the same thread_id and your human decision:

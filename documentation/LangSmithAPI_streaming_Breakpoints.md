@@ -1,5 +1,12 @@
 # LangSmith Developement Environment -Streaming and Breakpoints
 
+Lets Explore:
+1.  Streaming messages
+2. Filtering tokens and contents from streamed data
+3. Using Breakpoint interruption
+4. Updating state content
+5. Running after human inerrupt
+
 ## Stream 'messages' :
 You can stream only 'messages' with 
 ```
@@ -48,6 +55,7 @@ messages/metadata
 messages/partial
 messages/partial
 ```
+------------------------------------------------------
 ## Filtering tokens and contents from streamed data
 Using python filter out streamed data for debugging and analysis
 - metadata: metadata about the run
@@ -87,6 +95,7 @@ if event.event == "metadata":
                     print(f"Response Metadata: Finish Reason - {response_metadata['finish_reason']}")                    
         print("-" * 50)
 ```
+---------------------------------------------------------------
 # Breakpoints in LangSmith API
 
 # Static interrupts
@@ -133,7 +142,9 @@ async for chunk in client.runs.stream(
     print(f"Receiving new event: {chunk}...")
 
 ```
-# User Assistatnce
+----------------------------------------------------------------
+# User Assistance
+
 Graph can be resumes after an interruption
 ```
 if toolcall:
@@ -168,5 +179,43 @@ await client.runs.wait(
     input=None   # (2)!
 )
 ```
+-------------------------------------------------------------
+# Updating state content
+
+Langsmith provide easy access to state. Use 
+```
+current_state= await client.threads.get_state(thread['thread_id'])
+```
+### to update state, get the content of last message:
+```
+last_message = current_state['values']['messages'][-1]
+
+```
+### Chenge last_message['content']:
+```
+last_message['content'] = "No, Multiply 100 by 10 and hten divide by 10"
+```
+### Update:
+```
+await client.threads.update_state(thread['thread_id'], {"messages": last_message})
+```
+### check state:
+```
+current_state = await client.threads.get_state(thread['thread_id'])
+current_state['values']['messages'][-1]
+
+```
+
+#### Output must be:
+```
+{'content': 'No, Multiply 100 by 10 and hten divide by 10',
+ 'additional_kwargs': {},
+ 'response_metadata': {},
+ 'type': 'human',
+ 'name': None,
+ 'id': '31a9fa9f-0d71-4676-bb72-8fc4c80b1327'}
+```
+
+
 
 
