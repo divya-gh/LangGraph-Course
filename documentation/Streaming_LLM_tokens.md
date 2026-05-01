@@ -239,6 +239,7 @@ async for event in graph.astream_events(input, config, version="v2"):
     # 3. Extract the token
     token = event["data"].content
     print(token, end="")
+```
 This prints the model’s response token by token.
 
 ## ⭐ Summary (super clear)

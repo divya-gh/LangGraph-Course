@@ -1,7 +1,7 @@
 # LangSmith Developement Environment -Streaming and Breakpoints
 
 Lets Explore:
-1.  Streaming messages
+1. Streaming messages
 2. Filtering tokens and contents from streamed data
 3. Using Breakpoint interruption
 4. Updating state content
@@ -9,17 +9,20 @@ Lets Explore:
 
 ## Stream 'messages' :
 You can stream only 'messages' with 
+
 ```
 from langchain_core.messages import convert_to_messages
 ```
 ### EX:
-```thread = await client.threads.create()
+```
+thread = await client.threads.create()
 input_message = HumanMessage(content="Multiply 20 and 3")
 async for event in client.runs.stream(thread["thread_id"], assistant_id="agent", input={"messages": [input_message]}, stream_mode="values"):
     messages = event.data.get('messages',None)
     if messages:
         print(convert_to_messages(messages)[0])
     print('='*25)
+
 ```
 ## # Streaming mode in LangSmith API
 ** stream_mode = 'messages' **
@@ -186,12 +189,12 @@ Langsmith provide easy access to state. Use
 ```
 current_state= await client.threads.get_state(thread['thread_id'])
 ```
-### to update state, get the content of last message:
+### to update the state, get the content of the last message:
 ```
 last_message = current_state['values']['messages'][-1]
 
 ```
-### Chenge last_message['content']:
+### Change last_message['content']:
 ```
 last_message['content'] = "No, Multiply 100 by 10 and hten divide by 10"
 ```
@@ -214,7 +217,10 @@ current_state['values']['messages'][-1]
  'type': 'human',
  'name': None,
  'id': '31a9fa9f-0d71-4676-bb72-8fc4c80b1327'}
+
 ```
+
+
 
 
 
