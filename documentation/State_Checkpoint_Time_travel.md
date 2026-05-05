@@ -58,6 +58,126 @@ So every time your graph progresses, it’s leaving “save points” you can ju
 
 In LangSmith UI, this is usually a “Replay” action on a run/step; under the hood it’s just “resume from this checkpoint as if we were here again.”
 
+### Example: 
+```
+# Create thread ID
+thread = {"configurable": {"thread_id": "2"}}
+
+# set Input
+initial_input = {"messages": HumanMessage(content="Multiply 20 and 4")}
+
+# Run the graph
+for event in graph.stream(initial_input, thread, stream_mode="values"):
+    #print last message
+    print(event['messages'][-1])
+    print("\n\n")
+
+# get current state:
+state = graph.get_state(thread)
+state
+
+# get state history
+All_state = [s for s in graph.get_state_history(thread)]
+
+# capture assistant node chekpoint
+Checkpoint = All_state[-3].config
+
+# replay graph at the specified checkpoint
+for chunk in graph.stream(None, Checkpoint , stream_mode="values"):
+    print(chunk)
+    print("/n")
+
+# check current state
+state = graph.get_state(thread)
+state
+
+```
+Notice: 
+- Graph creates new run-id and checkpoints
+- results can varry
+
+------------------------------------------------------------------------
+# 🧠 Why replay creates a new checkpoint
+When you click Replay (or re-run a thread via LangSmith API), LangGraph does not mutate the old run.
+
+Instead, it:
+
+    - Creates a new run ID
+    - Restores the old run’s initial checkpoint
+    - Executes the graph again
+    - Saves new checkpoints for this new run
+
+So you end up with:
+
+- Old run → original checkpoints
+- New run → new checkpoints created during replay
+
+This is intentional. It guarantees:
+
+    - **Reproducibility**
+    - **Isolation** (your replay cannot corrupt the original run)
+    - **Deterministic time‑travel** (each run has its own timeline)
+
+## 🔍 What actually happens under the hood
+When you replay:
+- LangGraph loads the saved state from the original checkpoint
+- It starts a new execution context
+- Every node that runs writes a new checkpoint entry into the checkpointer
+
+This is why you see different checkpoint id:
+```
+checkpoint_id: abc123   # original
+checkpoint_id: xyz789   # replay
+```
+Even though they share the same starting checkpoint, they diverge immediately.
+
+## 🛠 Why LangGraph must do this
+1. Safety
+- If replay overwrote old checkpoints, you’d lose the original debugging trace.
+
+2. Determinism
+You can compare:
+- Old output
+- New output
+- Node-by-node differences
+
+3. Time‑travel correctness
+- Forking and replaying only work if each run has its own timeline.
+
+4. Concurrency
+- Multiple replays can run in parallel without interfering.
+
+## 📌 Example
+Let’s say your original run created checkpoints:
+```
+C0 → C1 → C2 → C3
+```
+
+When you replay from C2:
+```
+Original run:   C0 → C1 → C2 → C3
+Replay run:     C2' → C3' → C4'
+```
+
+Notice:
+- C2' is a copy of C2
+- C3' and C4' are new checkpoints created during replay
+
+## 🎯 When this matters in your workflow
+✔ Debugging
+Replay lets you test new code/prompt/model changes without touching the original run.
+
+✔ Time‑travel
+You can fork from any checkpoint and explore alternate paths.
+
+✔ Evaluation
+You can replay a dataset of runs after updating your agent.
+
+✔ Human‑in‑the‑loop
+Interrupt → resume → replay all produce new checkpoints.
+
+--------------------------------------------------------------
+
 # Time travel via Fork (conceptual steps)
 ### Goal: Start a new branch from a past checkpoint, possibly with changes.
 
@@ -86,5 +206,3 @@ Input (e.g. change "input": "Tell me a joke" → "input": "Explain quantum physi
 #### Checkpoint = save point
 #### Replay = load save and continue same story
 #### Fork = load save and start an alternate story
-
-------------------------------------------------------------------------
