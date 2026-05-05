@@ -14,7 +14,7 @@ It includes:
     - metadata (graph_id, run_id, step, etc.)
     - checkpoint_id (unique identifier)
 
-## Replay: “Start a new run using the state stored in this specificcheckpoint.”
+## Replay: “Start a new run using the state stored in this specific checkpoint.”
 
 ### 1. get State: get current state
 ```
@@ -34,7 +34,7 @@ replay_state = state_history[-2]
 ```
 shows the snapshot of the specific node saved at a checkpoint
 
-### 3.### Get checkpoint ID
+### 3. Get checkpoint ID
 ```
 checkpoint_id = replay_state['checkpoint_id']
 ```
@@ -78,7 +78,7 @@ Notice:
 - C3' and C4' are new checkpoints created during replay
 -----------------------------------------------------------------
 
-## Fork - -  Forking: Creating a new run or thread starting from an existing one, usually with small changes (prompt, config, code).
+## Fork: Creating a new run or thread starting from an existing one, usually with small changes (prompt, config, code).
 
     - Create a new thread
     - use messases.id to modify the content

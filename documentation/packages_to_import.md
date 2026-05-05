@@ -88,6 +88,7 @@ from langchain_core.messages import RemoveMessage
 # Trim messages reducer
 ```
 from langchain_core.messages import trim_messages
+
 from langchain_core.messages.utils import (
     trim_messages,
     count_tokens_approximately  
