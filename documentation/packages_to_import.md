@@ -10,7 +10,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 # Create state and stateSchema
 ```
 from typing_extensions import TypedDict
-from typing import Literal
+from typing import Literal , Any , List
 
 class TypedDictState(TypedDict):
     name: str
