@@ -174,3 +174,36 @@ from langgraph.types import interrupt
 from langgraph.types import Command
 ```
 
+# Install Tavily -search
+```
+pip install tavily-python
+```
+# Set Tavily on jupyter notebook
+```
+os.environ["TAVILY_API_KEY"] = os.getenv("TAVILY_API_KEY")
+
+from tavily import TavilyClient
+
+client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
+
+response = client.search("What is LangGraph?")
+print(response)
+
+```
+# install langchain-tavily
+```
+!pip install langchain-tavily
+
+from langchain_tavily import TavilySearch
+
+```
+# install Wikipedia
+```
+pip install wikipedia
+
+```
+# Wikipedia import
+```
+from langchain_community.document_loaders import WikipediaLoader
+```
+

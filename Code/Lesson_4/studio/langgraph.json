@@ -1,0 +1,8 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "parallelization_with_LLM": "./parallelization_with_LLM.py:graph"
+
+  },
+  "env": ".env"
+}
