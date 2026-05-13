@@ -196,6 +196,7 @@ print(response)
 
 from langchain_tavily import TavilySearch
 
+response = tavily_Search.invoke({'query': state['Question']})
 ```
 # install Wikipedia
 ```
@@ -205,5 +206,9 @@ pip install wikipedia
 # Wikipedia import
 ```
 from langchain_community.document_loaders import WikipediaLoader
+
+#load data
+search_docs = WikipediaLoader(query=state['Question'], load_max_docs=3, doc_content_chars_max=1000).load()
+
 ```
 
