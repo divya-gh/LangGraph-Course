@@ -211,4 +211,8 @@ from langchain_community.document_loaders import WikipediaLoader
 search_docs = WikipediaLoader(query=state['Question'], load_max_docs=3, doc_content_chars_max=1000).load()
 
 ```
+# map-reduce with send API
+```
+from langgraph.types import Send
+```
 

@@ -129,6 +129,9 @@ Code
 
 ## Summary:
 ## Map-Reduce with the Send API (Beginner Guide)
+```
+from langgraph.types import Send
+```
 
 ### What is Map-Reduce?
 - Map: break a big task into many small tasks
@@ -138,6 +141,10 @@ Code
 Send lets a node dynamically create tasks at runtime.
 Each task runs the same node with different input.
 LangGraph runs all tasks in parallel.
+```
+return [send(node_name , {'key': value}) for value in state['key']]
+```
+sends state value as an input to the node 
 
 ### Steps:
 1. Create a state with a list of items.
@@ -151,3 +158,4 @@ LangGraph runs all tasks in parallel.
 - Great for multi-agent dispatching
 - Works with LLMs, tools, and subgraphs
 - Lets you scale tasks dynamically
+
