@@ -36,6 +36,14 @@ class Person(BaseModel):
     age: int
 BaseModel is the base class for all Pydantic models. 
 
+# pydantic field description
+```
+from pydantic import BaseModel ,Field
+class Analyst(BaseModel):
+    name:str = Field(description="Name of the analyst.")
+    role:str = Field(description="Role of the analyst in the context of the topic.",)
+```
+
 # Set pydantic Validation Error: python
 ```
 from pydantic import BaseModel , field_validator , ValidationError
@@ -190,13 +198,15 @@ response = client.search("What is LangGraph?")
 print(response)
 
 ```
-# install langchain-tavily
+# install Tavily websearch engine - langchain-tavily
 ```
 !pip install langchain-tavily
 
 from langchain_tavily import TavilySearch
 
-response = tavily_Search.invoke({'query': state['Question']})
+tavily_Search = TavilySearch(max_results =3)
+data = tavily_Search.invoke({'query': question})
+print(data)
 ```
 # install Wikipedia
 ```
@@ -211,8 +221,56 @@ from langchain_community.document_loaders import WikipediaLoader
 search_docs = WikipediaLoader(query=state['Question'], load_max_docs=3, doc_content_chars_max=1000).load()
 
 ```
+# Newer Wikipedia wrapper:
+```
+newer, more stable loader
+Replace:
+
+python
+from langchain_community.utilities import WikipediaAPIWrapper
+with:
+wiki = WikipediaAPIWrapper(top_k_results=3, doc_content_chars_max=2000)
+docs = wiki.load("what is love")
+
+for d in docs:
+    print(d[:500])
+
+```
+
 # map-reduce with send API
 ```
 from langgraph.types import Send
 ```
 
+# Install WebBaseLoader :
+```
+pip install langchain langchain-community beautifulsoup4 requests
+OR
+pip install -qU langchain-community beautifulsoup4
+```
+# . Import WebBaseLoader
+```
+from langchain_community.document_loaders import WebBaseLoader
+oR
+from langchain.document_loaders import WebBaseLoader
+
+```
+# Load WebBaseLoader:
+```
+Load a single web page
+python
+url = "https://academy.langchain.com/courses/take/intro-to-langgraph/lessons/58239974-lesson-4-research-assistant"
+
+loader = WebBaseLoader(url)
+docs = loader.load()
+
+print(len(docs))
+print(docs[0].page_content[:500])
+#You should see the cleaned text from the page.
+```
+# Convert a list of messages Into a single formatted string
+```
+from langchain_core.messages import get_buffer_string
+messages_to_string = get_buffer_string(messages)
+
+```
