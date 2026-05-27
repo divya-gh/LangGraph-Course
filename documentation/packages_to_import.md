@@ -274,3 +274,9 @@ from langchain_core.messages import get_buffer_string
 messages_to_string = get_buffer_string(messages)
 
 ```
+# import markdown:
+```
+from IPython.display import Markdown
+
+Markdown(variable to markdown)
+```

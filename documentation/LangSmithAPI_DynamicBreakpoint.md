@@ -40,8 +40,23 @@ builder = StateGraph(State)
 builder.add_node("approval", approval_node)
 builder.set_entry_point("approval")
 ```
+## Resume the Graph With Human Input using Command(resume=True)
+What happens now:
+- The graph resumes from the saved checkpoint
+- interrupt() returns True
+- proceeds to next node
 
-### IMPORTANT: 
+```
+from langgraph.types import Command
+
+for chunk in graph.stream(Command(resume=True) , thread_config , stream_mode="values", version = 'v2'):
+    print(chunk)
+state = graph.get_state(thread_config)
+state
+```
+  
+
+### IMPORTANT LangSmith API: 
 - Do NOT pass a custom checkpointer in LangSmith API graph = builder.compile()
 - When deployed to LangSmith API, persistence is handled automatically.
 - Do not use InMemorySaver() or any custom checkpointer.
