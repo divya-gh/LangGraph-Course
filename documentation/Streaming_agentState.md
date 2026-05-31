@@ -170,8 +170,6 @@ Streams the entire state each time it changes.
     - Useful for progress bars, logs, tool outputs, etc.
     - Safe to ignore if you don’t need custom events.
 
-<img src="../Images/streaming_modes.png" width="350" height="400">
-
 ### 🧩 Example: Streaming all mode options
 python
 ```

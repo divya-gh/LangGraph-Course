@@ -1,7 +1,8 @@
 {
   "dependencies": ["."],
   "graphs": {
-    "parallelization_with_LLM": "./parallelization_with_LLM.py:graph"
+    "parallelization_with_LLM": "./parallelization_with_LLM.py:graph",
+    "Research_Analysis_LLM_Agent":"./Research_Analysis_LLM_Agent.py:main_graph"
 
   },
   "env": ".env"

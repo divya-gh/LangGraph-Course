@@ -40,23 +40,6 @@ llm = ChatGoogleGenerativeAI( model= "gemini-2.5-flash" ,
 llm.invoke("What day is this?").content
 
 
-# In[4]:
-
-
-# Set Tavily for web search
-os.environ["TAVILY_API_KEY"] = os.getenv("TAVILY_API_KEY")
-
-from tavily import TavilyClient
-
-client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
-
-response = client.search("What is LangGraph?")
-print(response)
-
-
-# ### Build a graph
-
-# In[5]:
 
 
 from langgraph.graph import StateGraph, START, END
