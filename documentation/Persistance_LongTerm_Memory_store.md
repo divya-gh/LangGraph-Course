@@ -1,10 +1,13 @@
-# Memory overview
+# Memory Overview
 
 ### Definition: Memory is an essential cognitive function that permits individuals to acquire, retain, and recover data that defines a person’s identity (Zlotnik and Vansintjan, 2019)
 
 Memory is a system that rememembers information about previous interactions.
 
 In AI, memory is crucial because it helps them adapt to user preferences by using memory as a feedback to learn. When Agents tackle more complex tasks with ultiple users, this feature becomes essential for both efficiency and user satisfaction..
+
+<img src="../Images/memory_types.png" width="600" height="400">
+
 
 ## In Agentic AI we have 2 Types of Memory:
 
@@ -38,7 +41,7 @@ Different application need different type of memory.  Comparing AI memory to Hum
 **According to CoALA paper, we can map these human memory types to those used in AI agents.**
 
 ### Example: 
-<img src="../Images/Memory_Human_AI.png" width="350" height="400">
+<img src="../Images/Memory_Human_AI.png" width="600" height="400">
 
 `Use following questions as your framework to build a long-term memory`
 
