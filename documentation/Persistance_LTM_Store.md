@@ -214,4 +214,4 @@ def review_memory_node(state, store):
     return {"messages": [{"role": "assistant", "content": "Memory updated."}]}
 
 ```
-<img src="../Images/store_summary.png" width="600" height="400">
+<img src="../Images/store_summary.png" width="400" height="700">
