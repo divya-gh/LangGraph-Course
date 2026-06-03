@@ -11,13 +11,13 @@ In AI, memory is crucial because it helps them adapt to user preferences by usin
 
 ## In Agentic AI we have 2 Types of Memory:
 
-`1. Short Term Memory : Thread count Memory`
+#### `1. Short Term Memory : Thread count Memory`
 - State is saved in database as a checkpointer.
 - Memory of each event is a checkpointer which is saved with every action
 - Collection of these checkpointers are thread . which can be called ay time.
 - memory persists as long as the session persists. 
 
-`2. Long Term Memory: `
+#### `2. Long Term Memory: `
  - memory persists across multiple sessions and are shared across conversational threads.
  -  collection of threads sharing the experience across the session
  - experiences can be users specific or application level data 

@@ -134,6 +134,12 @@ checkpointer = MemorySaver()
 graph = builder.compile(checkpointer=checkpointer)
 
 ```
+# lOng-term memory store
+```
+from langgraph.store.memory import InMemoryStore
+longterm_Inmemory_store = InMemoryStore()
+```
+
 # External-DB : SQLite
 ```
 import sqlite3
@@ -165,6 +171,11 @@ from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
 #Install with:
 `pip install aiosqlite`
 ```
+# import Runnable Config:
+```
+from langchain_core.runnables.config import RunnableConfig
+```
+
 # Install LangSmith API for local development deployment
 ```
 pip install -U langgraph-api
@@ -280,3 +291,17 @@ from IPython.display import Markdown
 
 Markdown(variable to markdown)
 ```
+
+
+------------------------------------------------------------------
+# langSmith configuration for API 
+
+```
+import configuration
+    # Get configuration for LangSmith API
+    configurable = configuration.Configuration.from_runnable_config(config)
+
+    # Get the user ID from the config
+    user_id = configurable.user_id
+
+    ```

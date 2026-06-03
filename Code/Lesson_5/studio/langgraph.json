@@ -1,0 +1,9 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "Chatbot_with_Memory": "./Chatbot_with_Memory.py:graph"
+    
+
+  },
+  "env": ".env"
+}
