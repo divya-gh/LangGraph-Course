@@ -137,7 +137,12 @@ graph = builder.compile(checkpointer=checkpointer)
 # lOng-term memory store
 ```
 from langgraph.store.memory import InMemoryStore
+from langgraph.store.base import BaseStore
+
 longterm_Inmemory_store = InMemoryStore()
+# include store:Base store in the node
+def node(state , store:Basestore):
+
 ```
 
 # External-DB : SQLite

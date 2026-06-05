@@ -196,7 +196,8 @@ Now your agent can read and write memories dynamically.
 ## 🔟 Example: Memory Review Node
 Here’s how you can design a node that reviews and updates memory: python
 ```
-def review_memory_node(state, store):
+from langgraph.store.base import BaseStore
+def review_memory_node(state, store: BaseStore):
     ns = (state["user_id"], "chatbot")
     existing = store.get(ns, "profile") or {}
     messages = state["messages"]
