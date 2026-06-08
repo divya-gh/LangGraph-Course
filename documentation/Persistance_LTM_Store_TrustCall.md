@@ -1,6 +1,7 @@
 # Long Term Memory - Store -> Trust Call
 
 1. What is Trustcall?
+
 Trustcall is an open‑source library created by Will Fu‑Hinthorn (LangChain team) that solves a very real problem. 
 
 Wen know that **"LLMs are bad at reliably updating structured JSON schemas"**
@@ -243,3 +244,164 @@ Use Trustcall when:
 
 
 <img src="../Images/trust_call.png" width="600" height="700">
+
+-------------------------------------------------------------------
+# Trustcall Updates to the memory
+
+1. The idea: “don’t rewrite the whole profile”
+Instead of:
+
+Sending the entire existing profile to the model
+
+Asking it to regenerate a new full profile
+
+TrustCall does this:
+
+“Here is the existing profile. Here are new messages.
+Give me a JSON Patch that updates only what changed.”
+
+Then TrustCall applies that patch to your existing dict.
+
+Result:
+
+Less chance of losing fields
+
+Less chance of hallucinations
+
+Fewer tokens (only changed parts are generated)
+
+2. Start with a Pydantic profile model
+python
+from pydantic import BaseModel, Field
+
+class UserProfile(BaseModel):
+    user_name: str | None = Field(None, description="preferred name of the user")
+    age: int | None = Field(None, description="age of the user")
+    interests: list[str] = Field(default_factory=list, description="list of user interests")
+    additionalInfo: dict[str, str] = Field(default_factory=dict, description="catches all other facts")
+You’ll have an instance of this model stored as the current profile, e.g.:
+
+python
+existing_profile = UserProfile(
+    user_name="Diya",
+    age=30,
+    interests=["Gardening"],
+    additionalInfo={"location": "San Antonio"}
+)
+
+3. Serialize the existing profile to a dict
+TrustCall’s update API expects the existing schema as a plain dict.
+
+Use model_dump():
+
+python
+existing_dict = existing_profile.model_dump()
+Now existing_dict looks like:
+
+python
+{
+    "user_name": "Diya",
+    "age": 30,
+    "interests": ["Gardening"],
+    "additionalInfo": {"location": "San Antonio"}
+}
+
+. Create the TrustCall updater (not just extractor)
+You already used create_extractor for fresh extraction.
+For updates, you still use create_extractor, but you pass an existing argument when invoking.
+
+python
+from trustcall import create_extractor
+
+profile_updater = create_extractor(
+    llm,
+    tools=[UserProfile],
+    tool_choice="UserProfile"
+)
+Same setup as before—what changes is how you call it.
+
+5. Prepare the new messages that may change the profile
+Example:
+
+python
+from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
+
+conversation = [
+    HumanMessage(content="Hi, I'm Diya."),
+    AIMessage(content="Nice to meet you, Diya."),
+    HumanMessage(content="I recently turned 31 and I now also like hiking.")
+]
+
+System instruction:
+
+python
+sys_instr = SystemMessage(content="""
+You are updating an existing user profile.
+
+- Use the existing profile as the base.
+- Only change fields when the conversation clearly provides new or conflicting information.
+- Do not erase existing information unless it is explicitly contradicted.
+- If new interests are mentioned, append them to the list.
+- If age changes, overwrite with the new age.
+- Any extra facts go into additionalInfo.
+""")
+6. Call TrustCall with the existing profile for update
+Here’s the key part: pass existing and the schema name.
+
+python
+result = profile_updater.invoke(
+    {
+        "messages": [sys_instr] + conversation,
+        "existing": {
+            "UserProfile": existing_dict  # schema name → existing dict
+        }
+    }
+)
+Under the hood, TrustCall:
+
+Shows the model the existing profile.
+
+Asks it to produce a JSON Patch (only changes).
+
+Applies that patch to existing_dict.
+
+Returns the updated profile dict.
+
+Your result will be a UserProfile‑shaped dict, e.g.:
+
+python
+{
+    "user_name": "Diya",
+    "age": 31,
+    "interests": ["Gardening", "Hiking"],
+    "additionalInfo": {"location": "San Antonio"}
+}
+Only the changed fields are updated.
+
+7. Turn the updated dict back into a Pydantic model (optional)
+If you want to keep using Pydantic instances:
+
+python
+updated_profile = UserProfile(**result)
+Then you can store updated_profile in your memory store.
+
+8. Mental model: what TrustCall is doing for updates
+Before:  
+You’d send the whole profile + messages → model rewrites everything → risk of losing fields.
+
+With TrustCall:
+
+You send existing dict + messages.
+
+Model outputs a patch (only diffs).
+
+TrustCall applies the patch.
+
+You get a clean, updated profile.
+
+You don’t see the JSON Patch directly; TrustCall handles it internally. You just see:
+
+Input: existing dict
+
+Output: updated dict
+

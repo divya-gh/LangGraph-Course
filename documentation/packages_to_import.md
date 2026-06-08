@@ -144,6 +144,19 @@ longterm_Inmemory_store = InMemoryStore()
 def node(state , store:Basestore):
 
 ```
+# Install and import TrustCall 
+```
+pip install trustcall
+
+from trustcall import create_extractor
+
+trustcall_extractor = create_extractor(
+    model,                     # your LLM
+    tools=[schema_name],       # your schema
+    tool_choice="schema_name"  # force this schema
+)
+
+```
 
 # External-DB : SQLite
 ```
