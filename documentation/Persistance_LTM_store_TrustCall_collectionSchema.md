@@ -311,3 +311,33 @@ Passing **None** lets the store auto‑generate a unique key.
 - ReAct agents
 - Long‑term memory agents
 are built.
+
+
+## ⭐ If you REALLY want multiple memories at once
+- **You must not use TrustCall for that.**
+
+#### Instead:
+- Use a normal LLM call
+- Ask it to output a list
+- Then validate each item with Pydantic
+- Then store them individually
+But TrustCall cannot do this.
+
+## simple guide on schema model use \
+
+### If your goal is:
+- Extract multiple memories at once
+- Summarize a conversation into several facts
+Then Memory_collection is perfect.
+
+### If your goal is:
+- Write memories incrementally
+- Use a MemoryWriter node in LangGraph
+- Store one memory per turn
+Then use:
+```
+class Memory(BaseModel):
+    content: str
+```
+And extract one memory at a time.
+
